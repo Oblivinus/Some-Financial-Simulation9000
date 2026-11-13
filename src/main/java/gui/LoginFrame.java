@@ -6,11 +6,11 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 
-public class MainFrame extends javax.swing.JFrame {
+public class LoginFrame extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
 
-    public MainFrame() {
+    public LoginFrame() {
         initComponents();
         setTitle("Vines Financial");
 

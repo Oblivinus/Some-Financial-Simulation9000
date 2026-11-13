@@ -14,10 +14,11 @@ public class Storage {
 
     public static void save(Object obj, String fileName) {
         try {
-            Files.createDirectories(PATH_DIR);
             Path file = PATH_DIR.resolve(fileName);
+            Files.createDirectories(file.getParent());
             mapper.writeValue(file.toFile(), obj);
             System.out.println("Saved to: " + file.toAbsolutePath());
+
         } catch (java.io.IOException e) {
             throw new RuntimeException("Failed to save " + fileName, e);
         }
@@ -26,12 +27,16 @@ public class Storage {
     public static <T> T load(String fileName, Class<T> type) {
         Path file = PATH_DIR.resolve(fileName);
         if (!Files.exists(file)) {return null;}
+
+        System.out.println("Loaded: " + fileName + " from " + file.toAbsolutePath());
         return mapper.readValue(file.toFile(), type);
     }
 
     public static <T> T load(String fileName, TypeReference<T> type) {
         Path file = PATH_DIR.resolve(fileName);
         if (!Files.exists(file)) {return null;}
+
+        System.out.println("Loaded: " + fileName + " from " + file.toAbsolutePath());
         return mapper.readValue(file.toFile(), type);
     }
 }

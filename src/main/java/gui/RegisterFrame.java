@@ -168,7 +168,7 @@ public class RegisterFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_signinPerformed
 
     private void openLogin() {
-        VinesFinancial.mainFrame.open();
+        VinesFinancial.loginFrame.open();
         dispose();
     }
 
