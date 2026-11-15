@@ -58,7 +58,7 @@ public class VinesFinancial {
         try {
             AccountServer.register(new Account(user, pass));
             registerFrame.clear();
-            utility.util.ShowInformationWin("Information", "Sign in succesful.\n\nYou may login now ;)");
+            utility.Util.ShowInformationWin("Information", "Sign in succesful.\n\nYou may login now ;)");
 
         } catch (AccountException.AlreadyRegisteredExeception e) {
             registerFrame.displayWarning("User already exist");
