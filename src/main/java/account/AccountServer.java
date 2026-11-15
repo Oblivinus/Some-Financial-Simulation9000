@@ -1,6 +1,5 @@
 package account;
 
-import account.exception.AlreadyRegisteredException;
 import java.util.HashMap;
 import tools.jackson.core.type.TypeReference;
 import utility.Storage;
@@ -16,9 +15,9 @@ public class AccountServer {
         if (loaded != null) {registeredAccount = loaded;}
     }
 
-    public static Account register(Account account) throws AlreadyRegisteredException {
+    public static Account register(Account account) throws AccountException.AlreadyRegisteredExeception {
         if (isUserRegistered(account.username)) {
-            throw new AlreadyRegisteredException("Account already registered");
+            throw new AccountException.AlreadyRegisteredExeception("Account already registered");
         }
 
         registeredAccount.put(account.username, account);

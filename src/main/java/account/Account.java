@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.*;
 
 public class Account {
 
-    @JsonProperty String username;
-    @JsonProperty String password;
+    @JsonProperty public String username;
+    @JsonProperty public String password;
 
     @JsonProperty float balance = 0;
 

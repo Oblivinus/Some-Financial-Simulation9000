@@ -1,20 +1,39 @@
 package com.kelompok1.vinesfinancial;
 
 import account.*;
-import account.exception.AlreadyRegisteredException;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import gui.LoginFrame;
+import gui.MainFrame;
 import gui.RegisterFrame;
 import java.util.HashMap;
+import javax.swing.UIManager;
 import utility.*;
 
 public class VinesFinancial {
-    public static LoginFrame loginFrame = new LoginFrame();
-    public static RegisterFrame registerFrame = new RegisterFrame();
+
+    public static LoginFrame loginFrame;
+    public static RegisterFrame registerFrame;
+    public static MainFrame mainFrame;
     public static Account loggedAccount;
     
     public static void main(String[] args) {
+        init();
         if (!AccountServer.isUserRegistered("admin")) { AccountServer.register(new Account("admin", "123")); }
         System.out.println(Storage.PATH_DIR.toAbsolutePath());
+    }
+
+    private static void init() {
+        try {
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+
+
+        mainFrame = new  MainFrame();
+        loginFrame = new LoginFrame();
+        registerFrame = new RegisterFrame();
+        loginFrame.open();
     }
 
     public static void querySignin(HashMap<String, Object> loginInfo) {
@@ -41,7 +60,7 @@ public class VinesFinancial {
             registerFrame.clear();
             utility.util.ShowInformationWin("Information", "Sign in succesful.\n\nYou may login now ;)");
 
-        } catch (AlreadyRegisteredException e) {
+        } catch (AccountException.AlreadyRegisteredExeception e) {
             registerFrame.displayWarning("User already exist");
             return;
         }
@@ -70,10 +89,10 @@ public class VinesFinancial {
         if (loggedAccount != null) {
             System.out.println("Login Account");
             loginFrame.clear();
-            utility.util.ShowWarningWin("Get rekt.", "Deleting system32.");
+            mainFrame.open();
+            loginFrame.close();
         } else {
             loginFrame.displayWarning("Password is wrong");
         }
-        
     }
 }
