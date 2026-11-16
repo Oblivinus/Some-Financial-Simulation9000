@@ -4,10 +4,13 @@ import com.kelompok1.vinesfinancial.VinesFinancial;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import utility.Signal;
 
 public class LoginFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
+    public Signal<HashMap<String, Object>> onLoginClicked = new Signal<>();
+
 
     public LoginFrame() {
         initComponents();
@@ -15,6 +18,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
         registerLink.addMouseListener(new MouseAdapter() {
             @Override
+
+
             public void mouseClicked(MouseEvent e) {
                 openRegister();
             }
@@ -159,7 +164,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameFieldActionPerformed
 
     private void loginPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginPerformed
-        VinesFinancial.queryLogin(getLoginInfo());
+        onLoginClicked.emit(getLoginInfo());
     }//GEN-LAST:event_loginPerformed
 
     private void openRegister() {

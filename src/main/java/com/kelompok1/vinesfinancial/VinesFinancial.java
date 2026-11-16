@@ -34,6 +34,9 @@ public class VinesFinancial {
         loginFrame = new LoginFrame();
         registerFrame = new RegisterFrame();
         loginFrame.open();
+
+        loginFrame.onLoginClicked.connect(VinesFinancial::queryLogin);
+        registerFrame.onSigninClicked.connect(VinesFinancial::querySignin);
     }
 
     public static void querySignin(HashMap<String, Object> loginInfo) {
@@ -58,7 +61,7 @@ public class VinesFinancial {
         try {
             AccountServer.register(new Account(user, pass));
             registerFrame.clear();
-            utility.Util.ShowInformationWin("Information", "Sign in succesful.\n\nYou may login now ;)");
+            utility.VinesUtil.ShowInformationWin("Information", "Sign in succesful.\n\nYou may login now ;)");
 
         } catch (AccountException.AlreadyRegisteredExeception e) {
             registerFrame.displayWarning("User already exist");

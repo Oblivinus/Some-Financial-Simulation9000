@@ -3,10 +3,19 @@ package gui;
 import account.Account;
 import account.AccountException;
 import com.kelompok1.vinesfinancial.VinesFinancial;
+import gui.main.tranferWindow;
+import utility.Signal;
 
 public class MainFrame extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
+
+    tranferWindow tWindow = new tranferWindow();
+
+    public Signal onTranferClicked = new Signal();
+    public Signal onWithdrawClicked = new Signal();
+    public Signal onDepositClicked = new Signal();
+    public Signal onHistoryClicked = new Signal();
 
     public MainFrame() {
         initComponents();
@@ -47,22 +56,25 @@ public class MainFrame extends javax.swing.JFrame {
         tranferButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tranferButton.setText("Tranfer");
         tranferButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        tranferButton.addActionListener(this::tranferButtonActionPerformed);
 
         depositButton.setBackground(new java.awt.Color(51, 51, 51));
         depositButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         depositButton.setText("Desposit");
         depositButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        depositButton.addActionListener(this::depositButtonActionPerformed);
 
         withdrawButton.setBackground(new java.awt.Color(51, 51, 51));
         withdrawButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         withdrawButton.setText("Withdraw");
         withdrawButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        withdrawButton.addActionListener(this::withdrawButtonActionPerformed);
 
         historyButton.setBackground(new java.awt.Color(51, 51, 51));
         historyButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         historyButton.setText("History");
-        historyButton.setActionCommand("History");
         historyButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        historyButton.addActionListener(this::historyButtonActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,6 +141,23 @@ public class MainFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tranferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tranferButtonActionPerformed
+       tWindow.setVisible(true);
+        onTranferClicked.emit(ABORT);
+    }//GEN-LAST:event_tranferButtonActionPerformed
+
+    private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
+        onDepositClicked.emit(ABORT);
+    }//GEN-LAST:event_depositButtonActionPerformed
+
+    private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
+        onWithdrawClicked.emit(ABORT);
+    }//GEN-LAST:event_withdrawButtonActionPerformed
+
+    private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
+        onHistoryClicked.emit(ABORT);
+    }//GEN-LAST:event_historyButtonActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
     }
@@ -141,7 +170,7 @@ public class MainFrame extends javax.swing.JFrame {
        if (logged == null) { throw new AccountException.InvalidLoggedAccountException("Logged Account is null"); }
 
        String greeingStr = "Hello, %s.".formatted(logged.username);
-       String balanceStr = "Balance: Rp. %s".formatted(utility.Util.formatNumber(logged.balance));
+       String balanceStr = "Balance: Rp. %s".formatted(utility.VinesUtil.formatNumber(logged.balance));
        greetingLabel.setText(greeingStr);
        balanceLabel.setText(balanceStr);
 

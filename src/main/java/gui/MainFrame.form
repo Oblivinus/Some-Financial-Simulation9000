@@ -147,6 +147,9 @@
               <Font name="Monospaced" size="18" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tranferButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="gui.components.MonospaceButton" name="depositButton">
           <Properties>
@@ -163,6 +166,9 @@
               <Font name="Monospaced" size="18" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="depositButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="gui.components.MonospaceButton" name="withdrawButton">
           <Properties>
@@ -179,6 +185,9 @@
               <Font name="Monospaced" size="18" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="withdrawButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="gui.components.MonospaceButton" name="historyButton">
           <Properties>
@@ -191,11 +200,13 @@
               </Border>
             </Property>
             <Property name="text" type="java.lang.String" value="History"/>
-            <Property name="actionCommand" type="java.lang.String" value="History"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Monospaced" size="18" style="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="historyButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

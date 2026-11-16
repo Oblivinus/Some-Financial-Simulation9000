@@ -17,4 +17,21 @@ public class Account {
 
         if(this.username.equals("admin")) {this.balance = 999_999;}
     }
+
+    public void withdraw(double amount) {
+        amount = Math.max(amount, 0);
+
+        if (balance < amount) {return;}
+
+        balance -= amount;
+    }
+
+    public void deposit(double amount) {
+        amount = Math.max(amount, 0);
+        balance += amount;
+    }
+
+    public void tranfer(Account to, double amount) {
+        
+    }
 }
