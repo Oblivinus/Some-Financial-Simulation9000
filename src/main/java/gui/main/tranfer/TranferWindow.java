@@ -1,7 +1,7 @@
-package gui.main;
+package gui.main.tranfer;
 
+import com.kelompok1.vinesfinancial.RequestHandler;
 import gui.components.MonospaceButton;
-import structure.TranferRequest;
 
 public class TranferWindow extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TranferWindow.class.getName());
@@ -29,7 +29,7 @@ public class TranferWindow extends javax.swing.JFrame {
         accountNumberField = new gui.components.MonospaceTextfield();
         amountField = new gui.components.MonospaceTextfield();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         monospaceLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -53,10 +53,6 @@ public class TranferWindow extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(jList1);
-
-        accountNumberField.setText("");
-
-        amountField.setText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -126,12 +122,20 @@ public class TranferWindow extends javax.swing.JFrame {
 
     public MonospaceButton getTranferButton() { return tranferButton; }
 
-    public TranferRequest getTranferRequest() {
+    public RequestHandler.Tranfer getTranferRequest() {
         String accountNumber = accountNumberField.getText();
         double amount = Double.parseDouble(amountField.getText());
 
-        TranferRequest result = new TranferRequest(accountNumber, amount);
-        return result;
+        RequestHandler.Tranfer request = new RequestHandler.Tranfer();
+        request.accountNumber = accountNumber;
+        request.amount = amount;
+        return request;
+    }
+
+    public void open() {
+        setVisible(true);
+        accountNumberField.setText("");
+        amountField.setText("");
     }
 
     private void onSelection(javax.swing.event.ListSelectionEvent e) {

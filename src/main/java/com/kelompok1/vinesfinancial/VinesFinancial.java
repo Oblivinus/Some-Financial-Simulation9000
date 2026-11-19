@@ -5,9 +5,9 @@ import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import gui.LoginFrame;
 import gui.MainFrame;
 import gui.RegisterFrame;
+import gui.main.tranfer.TranferOveviewWindow;
 import java.util.HashMap;
 import javax.swing.UIManager;
-import structure.TranferRequest;
 import utility.*;
 
 public class VinesFinancial {
@@ -16,10 +16,12 @@ public class VinesFinancial {
     public static RegisterFrame registerFrame;
     public static MainFrame mainFrame;
     public static Account loggedAccount;
+
+    public static TranferOveviewWindow tranferOveviewFrame;
     
     public static void main(String[] args) {
         init();
-        if (!AccountServer.isUserRegistered("admin")) { AccountServer.register(new Account("admin", "123")); }
+        if (!AccountServer.isUserRegisteredByName("admin")) { AccountServer.register(new Account("admin", "123")); }
         System.out.println(Storage.PATH_DIR.toAbsolutePath());
     }
 
@@ -34,12 +36,13 @@ public class VinesFinancial {
         mainFrame = new  MainFrame();
         loginFrame = new LoginFrame();
         registerFrame = new RegisterFrame();
+
+        tranferOveviewFrame = new TranferOveviewWindow();
+
         loginFrame.open();
 
         loginFrame.onLoginClicked.connect(VinesFinancial::queryLogin);
         registerFrame.onSigninClicked.connect(VinesFinancial::querySignin);
-
-        mainFrame.onTranferRequest.connect(VinesFinancial::tranferQuery);
     }
 
     public static void querySignin(HashMap<String, Object> loginInfo) {
@@ -84,7 +87,7 @@ public class VinesFinancial {
             loginFrame.displayWarning();
         }
 
-        boolean isRegistered = AccountServer.isUserRegistered(user);
+        boolean isRegistered = AccountServer.isUserRegisteredByName(user);
 
         if (!isRegistered) {
             loginFrame.displayWarning("User is not exist");
@@ -102,7 +105,16 @@ public class VinesFinancial {
         }
     }
 
-    private static void tranferQuery(TranferRequest info) {
-        System.out.println(info.amount);
+    protected static void tranferQuery(RequestHandler.Tranfer request) {
+        tranferOveviewFrame.setInformation(request.accountNumber, String.valueOf(request.amount), String.valueOf(loggedAccount.balance));
+        tranferOveviewFrame.open();
+
+        VinesUtil.ShowInformationWin("Tranfer Success",
+                "Successfully tranfer Rp. %s \nto %s".formatted(
+                        VinesUtil.formatNumber(request.amount),
+                        request.accountNumber));
+
+
+        System.out.println(request.amount);
     }
 }

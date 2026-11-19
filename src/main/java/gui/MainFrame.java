@@ -2,9 +2,9 @@ package gui;
 
 import account.Account;
 import account.AccountException;
+import com.kelompok1.vinesfinancial.RequestHandler;
 import com.kelompok1.vinesfinancial.VinesFinancial;
-import gui.main.TranferWindow;
-import structure.TranferRequest;
+import gui.main.tranfer.TranferWindow;
 import utility.Signal;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -18,8 +18,6 @@ public class MainFrame extends javax.swing.JFrame {
     public Signal onDepositClicked = new Signal();
     public Signal onHistoryClicked = new Signal();
 
-    public Signal<TranferRequest> onTranferRequest = new Signal();
-
     public MainFrame() {
         initComponents();
     }
@@ -28,8 +26,8 @@ public class MainFrame extends javax.swing.JFrame {
         TranferWindow tranferWindow = new TranferWindow();
 
         tranferWindow.getTranferButton().onClicked.connect(e -> {
-            TranferRequest info = tranferWindow.getTranferRequest();
-            onTranferRequest.emit(info);
+            RequestHandler.Tranfer tranferRequest = tranferWindow.getTranferRequest();
+            tranferRequest.resolve();
         });
 
         return tranferWindow;
@@ -47,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame {
         depositButton = new gui.components.MonospaceButton();
         withdrawButton = new gui.components.MonospaceButton();
         historyButton = new gui.components.MonospaceButton();
+        idLabel = new gui.components.MonospaceLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(510, 500));
@@ -90,6 +89,10 @@ public class MainFrame extends javax.swing.JFrame {
         historyButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         historyButton.addActionListener(this::historyButtonActionPerformed);
 
+        idLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        idLabel.setText("012010101001");
+        idLabel.setToolTipText("");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -98,7 +101,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -113,11 +117,13 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(316, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(100, 100, 100)
@@ -128,7 +134,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(withdrawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(18, 18, 18)
                     .addComponent(historyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(59, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,30 +153,29 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tranferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tranferButtonActionPerformed
-       tWindow.setVisible(true);
-        onTranferClicked.emit(ABORT);
-    }//GEN-LAST:event_tranferButtonActionPerformed
-
-    private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
-        onDepositClicked.emit(ABORT);
-    }//GEN-LAST:event_depositButtonActionPerformed
+    private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
+        onHistoryClicked.emit(ABORT);
+    }//GEN-LAST:event_historyButtonActionPerformed
 
     private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
         onWithdrawClicked.emit(ABORT);
     }//GEN-LAST:event_withdrawButtonActionPerformed
 
-    private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
-        onHistoryClicked.emit(ABORT);
-    }//GEN-LAST:event_historyButtonActionPerformed
+    private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
+        onDepositClicked.emit(ABORT);
+    }//GEN-LAST:event_depositButtonActionPerformed
+
+    private void tranferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tranferButtonActionPerformed
+        tWindow.open();
+        onTranferClicked.emit(ABORT);
+    }//GEN-LAST:event_tranferButtonActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
@@ -185,6 +190,8 @@ public class MainFrame extends javax.swing.JFrame {
 
        String greeingStr = "Hello, %s.".formatted(logged.username);
        String balanceStr = "Balance: Rp. %s".formatted(utility.VinesUtil.formatNumber(logged.balance));
+       String idStr = "%s".formatted(logged.id);
+       idLabel.setText(idStr);
        greetingLabel.setText(greeingStr);
        balanceLabel.setText(balanceStr);
 
@@ -195,6 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
     private gui.components.MonospaceButton depositButton;
     private gui.components.MonospaceLabel greetingLabel;
     private gui.components.MonospaceButton historyButton;
+    private gui.components.MonospaceLabel idLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private gui.components.MonospaceButton tranferButton;

@@ -2,6 +2,8 @@ package utility;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 public class VinesUtil {
@@ -29,5 +31,13 @@ public class VinesUtil {
         DecimalFormat df = new DecimalFormat("#,###", symbols);
         String result = df.format(n);
         return result;
+    }
+
+    public static String getDate(String formatStr) {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formatStr);
+
+        String formattedDate = currentDate.format(formatter);
+        return formattedDate;
     }
 }
