@@ -1,26 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui.main;
 
 import gui.components.MonospaceButton;
+import structure.TranferRequest;
 
-/**
- *
- * @author rafif
- */
-public class tranferWindow extends javax.swing.JFrame {
+public class TranferWindow extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TranferWindow.class.getName());
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(tranferWindow.class.getName());
-
-    /**
-     * Creates new form tranferWindow
-     */
-    public tranferWindow() {
+    public TranferWindow() {
         initComponents();
 
         jList1.addListSelectionListener(this::onSelection);
+
+        accountNumberField.setAllowedPattern("\\d*");
+        amountField.setAllowedPattern("\\d*");
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -28,14 +20,14 @@ public class tranferWindow extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         monospaceLabel1 = new gui.components.MonospaceLabel();
-        confirmButton = new gui.components.MonospaceButton();
+        tranferButton = new gui.components.MonospaceButton();
         monospaceLabel2 = new gui.components.MonospaceLabel();
-        accountNumberField = new javax.swing.JTextField();
         monospaceLabel3 = new gui.components.MonospaceLabel();
         monospaceLabel4 = new gui.components.MonospaceLabel();
-        amountField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        accountNumberField = new gui.components.MonospaceTextfield();
+        amountField = new gui.components.MonospaceTextfield();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -44,19 +36,15 @@ public class tranferWindow extends javax.swing.JFrame {
         monospaceLabel1.setText("Tranfer to");
         monospaceLabel1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
 
-        confirmButton.setBackground(new java.awt.Color(51, 51, 51));
-        confirmButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        confirmButton.setText("Confirm");
+        tranferButton.setBackground(new java.awt.Color(51, 51, 51));
+        tranferButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tranferButton.setText("Tranfer");
 
         monospaceLabel2.setText("Account Number :");
-
-        accountNumberField.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
 
         monospaceLabel3.setText("Recently :");
 
         monospaceLabel4.setText("Amount :");
-
-        amountField.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
 
         jList1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -66,6 +54,10 @@ public class tranferWindow extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
+        accountNumberField.setText("");
+
+        amountField.setText("");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -74,7 +66,7 @@ public class tranferWindow extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(145, 145, 145)
-                        .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tranferButton, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 143, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -84,15 +76,15 @@ public class tranferWindow extends javax.swing.JFrame {
                             .addComponent(monospaceLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(accountNumberField))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(amountField))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(monospaceLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(monospaceLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(accountNumberField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(amountField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -104,16 +96,16 @@ public class tranferWindow extends javax.swing.JFrame {
                 .addComponent(monospaceLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(accountNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(monospaceLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(3, 3, 3)
                 .addComponent(monospaceLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tranferButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -132,7 +124,15 @@ public class tranferWindow extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public MonospaceButton getConfrimButton() { return confirmButton; }
+    public MonospaceButton getTranferButton() { return tranferButton; }
+
+    public TranferRequest getTranferRequest() {
+        String accountNumber = accountNumberField.getText();
+        double amount = Double.parseDouble(amountField.getText());
+
+        TranferRequest result = new TranferRequest(accountNumber, amount);
+        return result;
+    }
 
     private void onSelection(javax.swing.event.ListSelectionEvent e) {
         if (e.getValueIsAdjusting()) return;
@@ -145,9 +145,8 @@ public class tranferWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField accountNumberField;
-    private javax.swing.JTextField amountField;
-    private gui.components.MonospaceButton confirmButton;
+    private gui.components.MonospaceTextfield accountNumberField;
+    private gui.components.MonospaceTextfield amountField;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -155,5 +154,6 @@ public class tranferWindow extends javax.swing.JFrame {
     private gui.components.MonospaceLabel monospaceLabel2;
     private gui.components.MonospaceLabel monospaceLabel3;
     private gui.components.MonospaceLabel monospaceLabel4;
+    private gui.components.MonospaceButton tranferButton;
     // End of variables declaration//GEN-END:variables
 }

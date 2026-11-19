@@ -3,22 +3,36 @@ package gui;
 import account.Account;
 import account.AccountException;
 import com.kelompok1.vinesfinancial.VinesFinancial;
-import gui.main.tranferWindow;
+import gui.main.TranferWindow;
+import structure.TranferRequest;
 import utility.Signal;
 
 public class MainFrame extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
-    tranferWindow tWindow = new tranferWindow();
+    TranferWindow tWindow = createTranferWindow();
 
     public Signal onTranferClicked = new Signal();
     public Signal onWithdrawClicked = new Signal();
     public Signal onDepositClicked = new Signal();
     public Signal onHistoryClicked = new Signal();
 
+    public Signal<TranferRequest> onTranferRequest = new Signal();
+
     public MainFrame() {
         initComponents();
+    }
+
+    public TranferWindow createTranferWindow() {
+        TranferWindow tranferWindow = new TranferWindow();
+
+        tranferWindow.getTranferButton().onClicked.connect(e -> {
+            TranferRequest info = tranferWindow.getTranferRequest();
+            onTranferRequest.emit(info);
+        });
+
+        return tranferWindow;
     }
 
     @SuppressWarnings("unchecked")

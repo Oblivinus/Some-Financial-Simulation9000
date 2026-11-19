@@ -7,6 +7,7 @@ import gui.MainFrame;
 import gui.RegisterFrame;
 import java.util.HashMap;
 import javax.swing.UIManager;
+import structure.TranferRequest;
 import utility.*;
 
 public class VinesFinancial {
@@ -37,6 +38,8 @@ public class VinesFinancial {
 
         loginFrame.onLoginClicked.connect(VinesFinancial::queryLogin);
         registerFrame.onSigninClicked.connect(VinesFinancial::querySignin);
+
+        mainFrame.onTranferRequest.connect(VinesFinancial::tranferQuery);
     }
 
     public static void querySignin(HashMap<String, Object> loginInfo) {
@@ -97,5 +100,9 @@ public class VinesFinancial {
         } else {
             loginFrame.displayWarning("Password is wrong");
         }
+    }
+
+    private static void tranferQuery(TranferRequest info) {
+        System.out.println(info.amount);
     }
 }

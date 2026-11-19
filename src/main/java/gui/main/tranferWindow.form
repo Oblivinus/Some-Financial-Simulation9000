@@ -43,7 +43,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="145" max="-2" attributes="0"/>
-                          <Component id="confirmButton" min="-2" pref="106" max="-2" attributes="0"/>
+                          <Component id="tranferButton" min="-2" pref="106" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="143" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -56,18 +56,18 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="accountNumberField" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="amountField" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
                               <Component id="monospaceLabel3" max="32767" attributes="0"/>
                           </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="accountNumberField" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="amountField" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -83,16 +83,16 @@
                   <Component id="monospaceLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="accountNumberField" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="monospaceLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="amountField" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="monospaceLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" pref="220" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="confirmButton" min="-2" max="-2" attributes="0"/>
+                  <Component id="tranferButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -108,7 +108,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="gui.components.MonospaceButton" name="confirmButton">
+        <Component class="gui.components.MonospaceButton" name="tranferButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
@@ -118,19 +118,12 @@
                 <BevelBorder/>
               </Border>
             </Property>
-            <Property name="text" type="java.lang.String" value="Confirm"/>
+            <Property name="text" type="java.lang.String" value="Tranfer"/>
           </Properties>
         </Component>
         <Component class="gui.components.MonospaceLabel" name="monospaceLabel2">
           <Properties>
             <Property name="text" type="java.lang.String" value="Account Number :"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="accountNumberField">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Monospaced" size="12" style="0"/>
-            </Property>
           </Properties>
         </Component>
         <Component class="gui.components.MonospaceLabel" name="monospaceLabel3">
@@ -141,13 +134,6 @@
         <Component class="gui.components.MonospaceLabel" name="monospaceLabel4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Amount :"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="amountField">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Monospaced" size="12" style="0"/>
-            </Property>
           </Properties>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -174,6 +160,16 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="gui.components.MonospaceTextfield" name="accountNumberField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=""/>
+          </Properties>
+        </Component>
+        <Component class="gui.components.MonospaceTextfield" name="amountField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=""/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
