@@ -35,12 +35,12 @@ public class Account {
 
         if (balance < amount) {return;}
 
-        balance -= amount;
+        setBalance(balance - amount);
     }
 
     public void deposit(double amount) {
         amount = Math.max(amount, 0);
-        balance += amount;
+        setBalance(balance + amount);
     }
 
     public void setBalance(double amount) {

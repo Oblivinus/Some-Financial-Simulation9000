@@ -12,7 +12,7 @@ import javax.swing.UIManager;
 import utility.*;
 
 public class VinesFinancial {
-
+    public static boolean busy = false;
     public static LoginFrame loginFrame;
     public static RegisterFrame registerFrame;
     public static MainFrame mainFrame;
@@ -24,6 +24,17 @@ public class VinesFinancial {
         init();
         if (!AccountServer.isUserRegisteredByName("admin")) { AccountServer.register(new Account("admin", "123")); }
         System.out.println(Storage.PATH_DIR.toAbsolutePath());
+    }
+
+    public static boolean isBusy() {
+        return isShowing(mainFrame.tWindow)
+                || isShowing(mainFrame.dWindow)
+                || isShowing(mainFrame.wWindow)
+                ;
+    }
+
+    private static boolean isShowing(java.awt.Window w) {
+        return w != null && w.isVisible();
     }
 
     private static void init() {
@@ -120,6 +131,15 @@ public class VinesFinancial {
         }
     }
 
+    public static void querylogout() {
+        if (isBusy()) return;
+
+        loggedAccount = null;
+        mainFrame.dispose();
+        loginFrame.open();
+    }
+
+    //--------------------------------------------------------------------------------
     //account.json: 012221126849
     protected static void tranferQuery(RequestHandler.Tranfer request) {
         double total = request.amount + AccountServer.FEE;
@@ -148,6 +168,40 @@ public class VinesFinancial {
             mainFrame.tWindow.close();
         });
 
-        System.out.println(request.amount);
+        //System.out.println(request.amount);
+    }
+
+    //--------------------------------------------------------------------------------
+    protected static void queryDeposit(RequestHandler.Deposit request) {
+        request.account = loggedAccount;
+
+        if (request.amount <= 0) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Amount must not be 0.");
+            return;
+        }
+
+        request.finish();
+        mainFrame.dWindow.close();
+    }
+
+    //--------------------------------------------------------------------------------
+    protected static void queryWithdraw(RequestHandler.Withdraw request) {
+        request.account = loggedAccount;
+
+        if (request.amount <= 0) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Amount must not be 0.");
+            return;
+        }
+
+        if (!request.checkValidity()) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Request Invalid. \ndid you check your balance?");
+            return;
+        }
+
+        request.finish();
+        mainFrame.wWindow.close();
     }
 }

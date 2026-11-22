@@ -4,7 +4,11 @@ import account.Account;
 import account.AccountException;
 import com.kelompok1.vinesfinancial.RequestHandler;
 import com.kelompok1.vinesfinancial.VinesFinancial;
+import gui.main.deposit.DepositWindow;
 import gui.main.tranfer.TranferWindow;
+import gui.main.withdraw.WithdrawWindow;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import utility.Signal;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -12,6 +16,8 @@ public class MainFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
     public TranferWindow tWindow = createTranferWindow();
+    public DepositWindow dWindow = createDepositWindow();
+    public WithdrawWindow wWindow = createWithdrawWindow();
 
     public Signal onTranferClicked = new Signal();
     public Signal onWithdrawClicked = new Signal();
@@ -20,9 +26,17 @@ public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame() {
         initComponents();
+
+        logoutLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                VinesFinancial.querylogout();
+            }
+
+        });
     }
 
-    public TranferWindow createTranferWindow() {
+    private TranferWindow createTranferWindow() {
         TranferWindow tranferWindow = new TranferWindow();
 
         tranferWindow.getTranferButton().onClicked.connect(e -> {
@@ -31,6 +45,28 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         return tranferWindow;
+    }
+
+    private DepositWindow createDepositWindow() {
+        DepositWindow depositWindow = new DepositWindow();
+
+        depositWindow.getConfirmButton().onClicked.connect(e -> {
+            RequestHandler.Deposit request = depositWindow.getDepositRequest();
+            request.resolve();
+        });
+
+        return depositWindow;
+    }
+
+    private WithdrawWindow createWithdrawWindow() {
+        WithdrawWindow withdrawWindow = new WithdrawWindow();
+
+        withdrawWindow.getConfirmButton().onClicked.connect(e -> {
+            RequestHandler.Withdraw request = withdrawWindow.getWithdrawRequest();
+            request.resolve();
+        });
+
+        return withdrawWindow;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,6 +82,7 @@ public class MainFrame extends javax.swing.JFrame {
         withdrawButton = new gui.components.MonospaceButton();
         historyButton = new gui.components.MonospaceButton();
         idLabel = new gui.components.MonospaceLabel();
+        logoutLink = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(510, 500));
@@ -93,16 +130,25 @@ public class MainFrame extends javax.swing.JFrame {
         idLabel.setText("012010101001");
         idLabel.setToolTipText("");
 
+        logoutLink.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        logoutLink.setForeground(new java.awt.Color(255, 0, 0));
+        logoutLink.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logoutLink.setText("LOG OUT");
+        logoutLink.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(logoutLink, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(greetingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -123,7 +169,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(balanceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(357, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 326, Short.MAX_VALUE)
+                .addComponent(logoutLink)
+                .addContainerGap())
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(100, 100, 100)
@@ -161,18 +209,24 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
+        if (VinesFinancial.isBusy()) return;
         onHistoryClicked.emit(ABORT);
     }//GEN-LAST:event_historyButtonActionPerformed
 
     private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
+        if (VinesFinancial.isBusy()) return;
+        wWindow.open();
         onWithdrawClicked.emit(ABORT);
     }//GEN-LAST:event_withdrawButtonActionPerformed
 
     private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
+        if (VinesFinancial.isBusy()) return;
+        dWindow.open();
         onDepositClicked.emit(ABORT);
     }//GEN-LAST:event_depositButtonActionPerformed
 
     private void tranferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tranferButtonActionPerformed
+        if (VinesFinancial.isBusy()) return;
         tWindow.open();
         onTranferClicked.emit(ABORT);
     }//GEN-LAST:event_tranferButtonActionPerformed
@@ -211,6 +265,7 @@ public class MainFrame extends javax.swing.JFrame {
     private gui.components.MonospaceLabel idLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel logoutLink;
     private gui.components.MonospaceButton tranferButton;
     private gui.components.MonospaceButton withdrawButton;
     // End of variables declaration//GEN-END:variables
