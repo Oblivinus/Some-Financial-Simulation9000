@@ -1,5 +1,8 @@
 package gui.main.tranfer;
 
+import account.AccountServer;
+import gui.components.MonospaceButton;
+
 public class TranferOveviewWindow extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TranferOveviewWindow.class.getName());
@@ -21,6 +24,7 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
         balanceLabel = new gui.components.MonospaceLabel();
         idLabel = new gui.components.MonospaceLabel();
         amountLabel = new gui.components.MonospaceLabel();
+        totalLabel = new gui.components.MonospaceLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -60,6 +64,8 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
         amountLabel.setText("Amount: Rp. 100");
         amountLabel.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
 
+        totalLabel.setText("Total: Rp. 0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,7 +82,8 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(monospaceLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(feeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(idLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(idLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(totalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -91,9 +98,11 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
                 .addComponent(monospaceLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(feeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,13 +118,24 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setInformation(String accountId, String amount, String balance) {
-        amount = "Amount: %s".formatted(amount);
-        balance = "Balance: %s".formatted(balance);
+    public void setInformation(String accountId, double amount, double balance) {
+        String amountStr = "Amount: Rp. %.2f".formatted(amount);
+        String balanceStr = "Balance: Rp. %.2f".formatted(balance);
+        String feeStr = "Fee: Rp. %.2f".formatted(AccountServer.FEE);
+        String totalStr = "Total: Rp. %.2f".formatted(amount + AccountServer.FEE);
 
-        idLabel.setText(accountId);
-        amountLabel.setText(amount);
-        balanceLabel.setText(balance);
+        account.Account account = AccountServer.getAccountById(accountId);
+        String idStr = "%s - %s".formatted(account.username, accountId);
+
+        idLabel.setText(idStr);
+        amountLabel.setText(amountStr);
+        balanceLabel.setText(balanceStr);
+        feeLabel.setText(feeStr);
+        totalLabel.setText(totalStr);
+    }
+
+    public MonospaceButton confirmButton() {
+        return confirmButton;
     }
 
     public void open() {
@@ -135,5 +155,6 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
     private gui.components.MonospaceLabel idLabel;
     private javax.swing.JPanel jPanel1;
     private gui.components.MonospaceLabel monospaceLabel1;
+    private gui.components.MonospaceLabel totalLabel;
     // End of variables declaration//GEN-END:variables
 }

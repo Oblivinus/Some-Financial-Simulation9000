@@ -7,7 +7,8 @@ import utility.generator.AccountIdGenerator;
 
 
 public class AccountServer {
-     private static final String FILE = "accounts/accounts.json";
+    public static final double FEE = 1_500;
+    private static final String FILE = "accounts/accounts.json";
 
     static HashMap<String, Account> registeredAccount = new HashMap<String, Account>();
     static HashMap<String, Account> registeredAccountId = new HashMap<String, Account>();
@@ -39,7 +40,15 @@ public class AccountServer {
         return account;
     }
 
-   public Account getAccountById(String Id) {
+    public static void saveAll() {
+        Storage.save(registeredAccount, FILE);
+    }
+
+    public static Account getAdminAccount() {
+        return getAccountById("012010101001");
+    }
+
+   public static Account getAccountById(String Id) {
        return registeredAccountId.get(Id);
    }
 
@@ -47,10 +56,29 @@ public class AccountServer {
         return registeredAccount.containsKey(user);
     }
 
+    public static boolean isUserRegistered(String id) {
+        return registeredAccountId.containsKey(id);
+    }
+
     public static Account attemptLogin(String user, String pass) {
         if (!isUserRegisteredByName(user)) {return null;}
         Account thisAcc = registeredAccount.get(user);
         return thisAcc.password.equals(pass) ? thisAcc : null;
+    }
+
+    public static void tranfer(Account from, String toId, double amount) {
+        Account to = getAccountById(toId);
+        tranfer(from, to, amount);
+    }
+
+    public static void tranfer(Account from, Account to, double amount) {
+        from.setBalance(from.balance - (amount + FEE));
+        to.setBalance(to.balance + amount);
+
+        Account admin = getAdminAccount();
+        admin.setBalance(admin.balance + FEE);
+
+        from.addRecentTranfer(to);
     }
 }
 

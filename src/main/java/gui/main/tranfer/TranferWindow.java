@@ -1,6 +1,7 @@
 package gui.main.tranfer;
 
 import com.kelompok1.vinesfinancial.RequestHandler;
+import com.kelompok1.vinesfinancial.VinesFinancial;
 import gui.components.MonospaceButton;
 
 public class TranferWindow extends javax.swing.JFrame {
@@ -9,7 +10,12 @@ public class TranferWindow extends javax.swing.JFrame {
     public TranferWindow() {
         initComponents();
 
-        jList1.addListSelectionListener(this::onSelection);
+        recentList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                fillFromSelection();
+            }
+        });
 
         accountNumberField.setAllowedPattern("\\d*");
         amountField.setAllowedPattern("\\d*");
@@ -25,7 +31,7 @@ public class TranferWindow extends javax.swing.JFrame {
         monospaceLabel3 = new gui.components.MonospaceLabel();
         monospaceLabel4 = new gui.components.MonospaceLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        recentList = new javax.swing.JList<>();
         accountNumberField = new gui.components.MonospaceTextfield();
         amountField = new gui.components.MonospaceTextfield();
 
@@ -46,13 +52,13 @@ public class TranferWindow extends javax.swing.JFrame {
 
         monospaceLabel4.setText("Amount :");
 
-        jList1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        recentList.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
+        recentList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "hello - 12200" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(recentList);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -136,28 +142,36 @@ public class TranferWindow extends javax.swing.JFrame {
         setVisible(true);
         accountNumberField.setText("");
         amountField.setText("");
+        
+        account.Account logged = VinesFinancial.loggedAccount;
+        String[] arr = logged.recentTranfer.toArray(String[]::new);
+        recentList.setListData(arr);
     }
 
-    private void onSelection(javax.swing.event.ListSelectionEvent e) {
-        if (e.getValueIsAdjusting()) return;
+    public void close() {
+        dispose();
+    }
 
-        String selected = jList1.getSelectedValue();
+    private void fillFromSelection() {
+        String selected = recentList.getSelectedValue();
         if (selected != null) {
-            String accountNumber = selected.split(" - ")[1].trim();
-            accountNumberField.setText(accountNumber);
+            String[] parts = selected.split(" - ");
+            if (parts.length > 1) {
+                accountNumberField.setText(parts[1].trim());
+            }
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private gui.components.MonospaceTextfield accountNumberField;
     private gui.components.MonospaceTextfield amountField;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private gui.components.MonospaceLabel monospaceLabel1;
     private gui.components.MonospaceLabel monospaceLabel2;
     private gui.components.MonospaceLabel monospaceLabel3;
     private gui.components.MonospaceLabel monospaceLabel4;
+    private javax.swing.JList<String> recentList;
     private gui.components.MonospaceButton tranferButton;
     // End of variables declaration//GEN-END:variables
 }

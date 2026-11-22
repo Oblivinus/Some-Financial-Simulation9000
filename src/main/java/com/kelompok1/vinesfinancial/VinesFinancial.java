@@ -7,6 +7,7 @@ import gui.MainFrame;
 import gui.RegisterFrame;
 import gui.main.tranfer.TranferOveviewWindow;
 import java.util.HashMap;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import utility.*;
 
@@ -37,12 +38,26 @@ public class VinesFinancial {
         loginFrame = new LoginFrame();
         registerFrame = new RegisterFrame();
 
+        swingWrapper(mainFrame);
+        swingWrapper(loginFrame);
+        swingWrapper(registerFrame);
+
         tranferOveviewFrame = new TranferOveviewWindow();
 
         loginFrame.open();
 
         loginFrame.onLoginClicked.connect(VinesFinancial::queryLogin);
         registerFrame.onSigninClicked.connect(VinesFinancial::querySignin);
+    }
+
+    private static void swingWrapper(JFrame frame) {
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                AccountServer.saveAll();
+                System.out.println("Window is closing");
+            }
+        });
     }
 
     public static void querySignin(HashMap<String, Object> loginInfo) {
@@ -105,15 +120,33 @@ public class VinesFinancial {
         }
     }
 
+    //account.json: 012221126849
     protected static void tranferQuery(RequestHandler.Tranfer request) {
-        tranferOveviewFrame.setInformation(request.accountNumber, String.valueOf(request.amount), String.valueOf(loggedAccount.balance));
+        double total = request.amount + AccountServer.FEE;
+
+        if (!AccountServer.isUserRegistered(request.accountNumber)) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Account Target does not exist.");
+            return;
+        } else if (loggedAccount.id.equals(request.accountNumber)) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Account Target cannot be yourself.");
+            return;
+        }
+
+        if (loggedAccount.balance < total) {
+            request.deny();
+            VinesUtil.ShowWarningWin("Invalid Input", "Balance is not sufficient.");
+            return;
+        }
+
+        tranferOveviewFrame.setInformation(request.accountNumber, request.amount, loggedAccount.balance);
         tranferOveviewFrame.open();
-
-        VinesUtil.ShowInformationWin("Tranfer Success",
-                "Successfully tranfer Rp. %s \nto %s".formatted(
-                        VinesUtil.formatNumber(request.amount),
-                        request.accountNumber));
-
+        tranferOveviewFrame.confirmButton().onClicked.connect(e -> {
+            request.finish(loggedAccount);
+            tranferOveviewFrame.close();
+            mainFrame.tWindow.close();
+        });
 
         System.out.println(request.amount);
     }

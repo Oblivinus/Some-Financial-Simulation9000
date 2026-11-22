@@ -11,7 +11,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
-    TranferWindow tWindow = createTranferWindow();
+    public TranferWindow tWindow = createTranferWindow();
 
     public Signal onTranferClicked = new Signal();
     public Signal onWithdrawClicked = new Signal();
@@ -189,12 +189,18 @@ public class MainFrame extends javax.swing.JFrame {
        if (logged == null) { throw new AccountException.InvalidLoggedAccountException("Logged Account is null"); }
 
        String greeingStr = "Hello, %s.".formatted(logged.username);
-       String balanceStr = "Balance: Rp. %s".formatted(utility.VinesUtil.formatNumber(logged.balance));
        String idStr = "%s".formatted(logged.id);
        idLabel.setText(idStr);
        greetingLabel.setText(greeingStr);
-       balanceLabel.setText(balanceStr);
 
+       updateVisual(logged);
+
+       logged.balanceChange.connect(e -> updateVisual(logged));
+    }
+
+    private void updateVisual(Account logged) {
+         String balanceStr = "Balance: Rp. %s".formatted(utility.VinesUtil.formatNumber(logged.balance));
+         balanceLabel.setText(balanceStr);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
