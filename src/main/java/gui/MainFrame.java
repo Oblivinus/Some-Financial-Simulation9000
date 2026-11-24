@@ -27,6 +27,8 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
 
+
+        historyButton.setVisible(false);
         logoutLink.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -123,6 +125,7 @@ public class MainFrame extends javax.swing.JFrame {
         historyButton.setBackground(new java.awt.Color(51, 51, 51));
         historyButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         historyButton.setText("History");
+        historyButton.setEnabled(false);
         historyButton.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         historyButton.addActionListener(this::historyButtonActionPerformed);
 

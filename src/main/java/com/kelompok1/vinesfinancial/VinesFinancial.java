@@ -135,8 +135,8 @@ public class VinesFinancial {
         if (isBusy()) return;
 
         loggedAccount = null;
-        mainFrame.dispose();
         loginFrame.open();
+        mainFrame.dispose();
     }
 
     //--------------------------------------------------------------------------------
