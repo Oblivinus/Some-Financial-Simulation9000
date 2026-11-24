@@ -2,6 +2,7 @@ package gui.main.tranfer;
 
 import account.AccountServer;
 import gui.components.MonospaceButton;
+import utility.VinesUtil;
 
 public class TranferOveviewWindow extends javax.swing.JFrame {
 
@@ -119,10 +120,16 @@ public class TranferOveviewWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void setInformation(String accountId, double amount, double balance) {
-        String amountStr = "Amount: Rp. %.2f".formatted(amount);
-        String balanceStr = "Balance: Rp. %.2f".formatted(balance);
-        String feeStr = "Fee: Rp. %.2f".formatted(AccountServer.FEE);
-        String totalStr = "Total: Rp. %.2f".formatted(amount + AccountServer.FEE);
+        String amountFormat = VinesUtil.formatNumber(amount);
+        String balanceFormat = VinesUtil.formatNumber(balance);
+        String feeFormat = VinesUtil.formatNumber(AccountServer.FEE);
+        String totalFormat = VinesUtil.formatNumber( (amount + AccountServer.FEE ) );
+
+
+        String amountStr = "Amount: Rp. %s".formatted(amountFormat);
+        String balanceStr = "Balance: Rp. %s".formatted(balanceFormat);
+        String feeStr = "Fee: Rp. %s".formatted(feeFormat);
+        String totalStr = "Total: Rp. %s".formatted(feeFormat);
 
         account.Account account = AccountServer.getAccountById(accountId);
         String idStr = "%s - %s".formatted(account.username, accountId);
